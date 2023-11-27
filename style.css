@@ -1,0 +1,60 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial;
+  text-align: center;
+  background-color: #FEFAE0;
+  color: #783D19;
+}
+
+.em {
+  font-style: italic;
+}
+
+/* start with a 6 x 6 grid */
+.grid { 
+  width: 600px;
+  height: 600px;
+  background-color: #A9B388;
+  /* get the cells to wrap on the other line*/
+  display: flex;
+  flex-wrap: wrap; 
+  margin: 0 auto;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  background-color: #A9B388;
+  border: 5px solid #5F6F52;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+}
+
+button{
+  height: 2rem;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  background-color: #C4661F;
+  border-radius: 10%;
+}
+
+#counter{
+  display: flex;
+  justify-content: space-around;
+  margin: 0 auto;
+  align-items: center;
+  width: 1000px;
+}
+
+.available{
+  background-color: 
+  #d4d9c4;
+}

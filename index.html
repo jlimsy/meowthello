@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catmeowro - Othello</title>
+    <link rel="stylesheet" href = "style.css">
+
+  </head>
+  <body>
+
+    <div id = "screenStart">
+      <h1>Othello</h1>
+      <p>inspired by Othello (<span class="em">Ot-hello</span>)</p>
+      <h2>Select your level:</h2>
+      <!-- 6 by 6 -->
+      <button id = "buttonEasy">Small</button> 
+      <!-- 8 by 8 -->
+      <button id = "buttonMedium">Medium</button>
+      <!-- 10 by 10 -->
+      <button id = "buttonHard">Large</button>
+    </div>
+
+    <div id = "counter">
+      <div class = "player">Player X: <span id = "countX"></span></div>
+      <div class = "player">Player O: <span id = "countY"></span></div>
+    </div>
+
+
+    <div id = "screenGame">
+      <div class = "grid"></div>
+    </div>
+
+    <div id = "screenEnd">
+      <h1><span>Player</span> has won!</h1>
+      <button id = "restart" onClick="window.location.reload();">Restart</button>
+    </div>
+
+    <script src="/main.js" charset="utf-8"></script>
+
+  </body>
+</html>

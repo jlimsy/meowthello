@@ -54,7 +54,21 @@ button{
   width: 1000px;
 }
 
+.player{
+  display: flex;
+  background-color: #F9EBC7;
+  border-radius: 50px;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 30px;
+  margin: 10px;
+}
+
 .available{
-  background-color: 
-  #d4d9c4;
+  background-color: #d4d9c4;
+}
+
+.test{
+  background-color: #B99470;
 }

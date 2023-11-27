@@ -163,22 +163,145 @@ diagonally adjacent [0,0], [2,2], [0,2], [2,0]
 
 // console.log(numIdToStr([0, 1]));
 
-const playerX = "X";
-const playerO = "O";
+// const playerX = "X";
+// const playerO = "O";
 
 
-function switchPlayer(currPlayer){
-  let currPlayer = playerX;
-  if (currPlayer === playerX){
-    currPlayer === playerO;
-    console.log(playerO);
-  } else if (currPlayer === playerO) {
-    currPlayer === playerX;
-    console.log(playerX);
+// function switchPlayer(currPlayer){
+//   let currPlayer = playerX;
+//   if (currPlayer === playerX){
+//     currPlayer === playerO;
+//     console.log(playerO);
+//   } else if (currPlayer === playerO) {
+//     currPlayer === playerX;
+//     console.log(playerX);
+//   }
+//   return currPlayer
+// }
+
+// switchPlayer(currPlayer);
+// switchPlayer(currPlayer);
+// switchPlayer(currPlayer);
+
+
+let LEVEL_EASY = 6;
+
+function getLine0fCells(array){
+  let lineOfCells = [];
+  let x = array[0];
+  let y = array[1];
+
+  // horizontal
+
+  y = array[1];
+  for (x = array[0]-1; x >= 0; x--){
+    lineOfCells.push(
+      [x, y]
+      ); 
   }
-  return currPlayer
-}
 
-switchPlayer(currPlayer);
-switchPlayer(currPlayer);
-switchPlayer(currPlayer);
+  for (x = array[0]+1; x < LEVEL_EASY; x++){
+    lineOfCells.push(
+      [x, y]
+      ); 
+  }
+
+  // vertical
+
+  x = array[0];
+  for (y = array[1]-1; y >= 0; y--){
+    lineOfCells.push(
+      [x, y]
+      ); 
+  }
+
+  for (y = array[1]+1; y < LEVEL_EASY; y++){
+    lineOfCells.push(
+      [x, y]
+      ); 
+  }
+
+  // diagonal \northwest
+
+  x = array[0];
+  y = array[1];
+
+  for (x = array[0], y = array[1]; x < LEVEL_EASY && y < LEVEL_EASY ; x++, y++){
+      if (x === LEVEL_EASY-1 || y === LEVEL_EASY-1  ){
+        break;
+      } else {
+        lineOfCells.push(
+          [x+1, y+1],
+          )
+        }
+    }
+
+  // diagional \southeast
+
+  x = array[0];
+  y = array[1];
+
+  for (x = array[0], y = array[1]; x >= 0 && y >= 0 ; x--, y--){
+    if (y === 0 || x === 0){
+      break;
+    } else {
+      lineOfCells.push(
+        [x-1, y-1],
+        )
+      }
+  }
+
+  //diagonal /northeast
+
+  x = array[0];
+  y = array[1];
+
+  for (x = array[0], y = array[1]; x >=0 && y < LEVEL_EASY; x--, y++){
+    if (x === 0 || y === LEVEL_EASY-1){
+      break;
+    } else {
+      lineOfCells.push(
+        [x-1, y+1],
+        )
+      }
+    }
+
+  //diagonal /southwest
+  x = array[0];
+  y = array[1];
+
+  for (x = array[0], y = array[1]; x < LEVEL_EASY && y > 0; x++, y--){
+    if (x === LEVEL_EASY-1 ){
+      break;
+    } else {
+      lineOfCells.push(
+        [x+1, y-1],
+        )
+      }
+    }
+
+  return lineOfCells;
+
+};
+
+
+  console.log("output of [4,1]", getLine0fCells( [4,1]));
+  console.log("output of [5,5]", getLine0fCells([5,5]));
+  console.log("output of [2,4]", getLine0fCells([2,4]));
+  console.log("output of [2,1]", getLine0fCells([2,1]));
+
+
+/* 
+
+output for [0,0]:
+[0,1], [0,2], [0,3], [0,4], [0,5] // horizontal
+[1,0], [2,0], [3,0], [4,0], [5,0] // vertical
+[1,1], [2,2], [3,3], [4,4], [5,5] // diagonal
+
+output for [4,1]:
+[4,0], [4,2], [4,3], [4,4], [4,5] // horizontal
+[0,1], [1,1], [2,1], [3,1], [5,1], // vertical
+[3,0], [5,2], //diagonal
+[5,0], [3,2], [2,3], [1,4] //diagonal
+
+*/

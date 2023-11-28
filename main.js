@@ -13,6 +13,7 @@ const grid = document.querySelector(".grid");
 const cells = document.querySelectorAll(".cell"); 
               //array-like output that does not work when assigned to a constant
               //should you select the divs based on the document.createElement("div")
+const currPlayerDisplay = document.getElementById("current")
 
 
 /*----- event listeners -----*/
@@ -340,6 +341,8 @@ document.getElementById(startCells[3].toString()).innerText = playerX;
 
 
 function placeDisc(){
+  currPlayerDisplay.innerText = currPlayer
+  
   document.querySelectorAll(".cell").forEach(
     (cell) => {
       cell.addEventListener("click", function(event){
@@ -372,6 +375,8 @@ function placeDisc(){
 
       //valid
 
+
+
       function checkAdjCells(array){
 
         const directions = [
@@ -392,7 +397,7 @@ function placeDisc(){
           let col = array[1] + directions[dir].y;
           let strId = document.getElementById(numIdToStr([row, col]));
           console.log(strId, strId.innerText);
-          
+
           if (strId.innerText === "" || strId.innerText === currPlayer){
             continue;
             // console.log(strId, strId.innerText);
@@ -404,13 +409,21 @@ function placeDisc(){
             let strIdEnd = document.getElementById(numIdToStr([row, col]));
             // console.log("end" , strIdEnd);
             if (strIdEnd.innerText === currPlayer) {
-              event.target.classList.add("available");
+              // event.target.classList.add("available");
               event.target.innerText = currPlayer;
               idsToFlip.map(
                 (cell) => cell.innerText = currPlayer
               )
+              if (currPlayer === playerX){
+                currPlayer = playerO;
+                currPlayerDisplay.innerText = currPlayer
+              } else if (currPlayer === playerO) {
+                currPlayer = playerX;
+                currPlayerDisplay.innerText = currPlayer
+              }
             }
           }
+
         }
       }
     checkAdjCells(strIdToNum(event.target.id));

@@ -51,7 +51,7 @@ button{
   justify-content: space-around;
   margin: 0 auto;
   align-items: center;
-  width: 1000px;
+  width: 100vw;
 }
 
 .player{

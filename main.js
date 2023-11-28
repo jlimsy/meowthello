@@ -305,10 +305,12 @@ function placeDisc(){
           document.querySelector("#countO").innerText = ` ${scoreO}`;
           if (scoreX > scoreO) {
             let winner = "Player X";
-            document.querySelector(".winner").innerText = `${winner}`
-          } else if (scoreO > scoreO) {
+            document.querySelector(".status").innerText = `${winner} has won!`
+          } else if (scoreO > scoreX) {
             let winner = "Player O";
-            document.querySelector(".winner").innerText = `${winner}`
+            document.querySelector(".status").innerText = `${winner} has won!`
+          } else if (scoreX = scoreO) {
+            document.querySelector(".status").innerText = `It's a tie!`
           }
 
         })
@@ -318,73 +320,5 @@ function placeDisc(){
 
 
 // in case anything screws up, use this:
-  // function placeDisc(){
-  //   document.querySelectorAll(".cell").forEach(
-  //     (cell) => {
-  //       if (cell.innerText === ""){
-  //         cell.addEventListener("mouseover", function(event){
-  //           let numId = strIdToNum(event.target.id);
-  //           let dirAdjCells = getDirAdjIds(numId);
-  //           //console.log("Directly adjacent cells:", dirAdjCells);
-            
-  //           dirAdjCells.forEach(
-  //           (cell) => {
-  //             let strIdDirAdjCells = numIdToStr(cell);
-  
-  //             if (document.getElementById(strIdDirAdjCells).innerText !== ""){
-  //               document.getElementById(event.target.id).addEventListener("mouseover", function(event){
-  //                 event.target.classList.add("available");
-  //               });
-  //               document.getElementById(event.target.id).addEventListener("mouseout", function(event){
-  //                 event.target.classList.remove("available");
-  //               });
-  //               document.getElementById(event.target.id).addEventListener("click", function(event){
-  //                 event.target.innerText = currPlayer;
-  //                 if (event.target.innerText === playerX){
-  //                   currPlayer = playerO;
-  //                   console.log("playerO activated")
-  //                 } else {
-  //                   currPlayer = playerX;
-  //                   console.log("playerX activated")
-  //                 }
-  //                 // console.log(event.target.id);
-  //               });
-  //               let line0fCells = getLine0fCells(strIdToNum(event.target.id));
-  //               line0fCells.forEach(
-  //                 (cell) => {
-  //                   let strIdLine0fCells = numIdToStr(cell);
-  //                   if (document.getElementById(strIdLine0fCells).innerText === currPlayer){
-  //                     document.getElementById(event.target.id).addEventListener("click", function(event){
-  //                       document.getElementById(strIdLine0fCells).classList.add("test");
-  //                     });
-  //                   }
-  //                 }
-  //               )
-  //               // console.log("Line of cells:", line0fCells);
-  
-  //             };
-  
-  //             if (document.getElementById(event.target.id).innerText !== "") {
-  //               document.getElementById(event.target.id).addEventListener("mouseover", function(event){
-  //                 event.target.classList.remove("available");
-  //               });
-  //             };
-  //           }
-  //           )
-  
-  //           let scoreX = countScore(playerX);
-  //           let scoreO = countScore(playerO);
-  //           document.querySelector("#countX").innerText = ` ${scoreX}`;
-  //           document.querySelector("#countO").innerText = ` ${scoreO}`;
-  //           if (scoreX > scoreO) {
-  //             let winner = "Player X";
-  //             document.querySelector(".winner").innerText = `${winner}`
-  //           } else if (scoreO > scoreO) {
-  //             let winner = "Player O";
-  //             document.querySelector(".winner").innerText = `${winner}`
-  //           }
-  
-  //         })
-  //       }
-  //     })
-  //   }
+
+

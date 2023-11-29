@@ -318,6 +318,7 @@ function placeDisc(){
        };
 
        // SPECIFY THE VALID CELLS
+      let idsToFlip = [];
 
       function checkAdjCells(array){
 
@@ -331,8 +332,6 @@ function placeDisc(){
           {x: -1, y: +1}, //northeast
           {x: +1, y: -1}, //southwest
         ]
-
-        
 
         for (let dir in directions){
           let row = array[0] + directions[dir].x;
@@ -368,7 +367,6 @@ function placeDisc(){
       
                   if (strIdEnd.innerText === currPlayer) {
 
-                    let idsToFlip = [];
                     // console.log(`the current player at point of checking if chain of cells is ${currPlayer}`)
                     
                     for (let i = 1; i < step; i++) {
@@ -376,24 +374,27 @@ function placeDisc(){
                       let colFlip = array[1] + i * directions[dir].y;
                       idsToFlip.push([rowFlip, colFlip]);
                     }
-
-                    console.log("idsToFlip:", idsToFlip)
+                    
+                    console.log("idsToFlip:", idsToFlip);
+                    event.target.innerText = currPlayer; //place the disc
+                    break;
 
                     // console.log("Identify cells to flip:", idsToFlip);
-                    event.target.innerText = currPlayer; //place the disc
-      
-                    function flipDiscs(){
-                      idsToFlip.map(
-                        (cell) => {
-                          document.getElementById(numIdToStr(cell)).innerText = currPlayer
-                        }
-
-                      ); 
-                    }
-                    flipDiscs();
                   }
+
+
+    
+                }
               }
-            }
+              function flipDiscs(){
+                idsToFlip.map(
+                  (cell) => {
+                    document.getElementById(numIdToStr(cell)).innerText = currPlayer
+                  }
+
+                ); 
+              }
+              flipDiscs();
 
               
 

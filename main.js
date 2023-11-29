@@ -285,9 +285,6 @@ document.getElementById(startCells[3].toString()).innerText = playerX;
 //   });
 // };
 
-
-
-
 function placeDisc(){
   currPlayerDisplay.innerText = currPlayer
   
@@ -296,7 +293,7 @@ function placeDisc(){
       cell.addEventListener("click", function(event){
         console.log("---------- EVENT TARGET:", event.target.id);
   
-
+        //SPECIFY THE INVALID CELLS
         if (event.target.innerText !== ""){
           console.log("INVALID MOVE: Cell is not empty");
           return;
@@ -320,7 +317,7 @@ function placeDisc(){
         return
        };
 
-      //valid
+       // SPECIFY THE VALID CELLS
 
       function checkAdjCells(array){
 
@@ -344,42 +341,53 @@ function placeDisc(){
           let strId = document.getElementById(numIdToStr([row, col]));
           // console.log(strId.id, "innerText:", strId.innerText);
 
-          if (strId.innerText === "" || strId.innerText === currPlayer){
-            console.log("adjacent cell:", strId.id, strId.innerText);
-            console.log(`the current player at point of checking checking directly adj cells is ${currPlayer}`)
-            continue;
-          }
-          
-          if (strId.innerText !== currPlayer) {
-            console.log(`the current player at point of checking directly adj cells is ${currPlayer}`)
+          if (row >=0 && row < LEVEL_EASY && col >=0 && col < LEVEL_EASY){
+            if (strId.innerText === "" || strId.innerText === currPlayer){
+              console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
+              console.log(`the current player at point of checking checking directly adj cells is ${currPlayer}`)
+              continue;
+            }
+            
+            if (strId.innerText !== currPlayer) {
+              console.log(`the current player at point of checking directly adj cells is ${currPlayer}`)
 
-            row += directions[dir].x;
-            col += directions[dir].y;
+              // does it not increment more than one??
+              let rowChain = row += directions[dir].x;
+              let colChain = col += directions[dir].y;
 
-            let strIdEnd = document.getElementById(numIdToStr([row, col]));
-            console.log("troubleshoot end of chain:", strId.id, [row, col])
-            console.log(`end of chain till ${strIdEnd.innerText}` , strIdEnd.id);
+              if (rowChain >=0 && rowChain < LEVEL_EASY && rowChain >=0 && colChain < LEVEL_EASY){
 
-            // if (strIdEnd.innerText === ""){
-            //   console.log("do not progress")
-            // }
+                let strIdEnd = document.getElementById(numIdToStr([rowChain, colChain]));
+                console.log("troubleshoot end of chain:", strId.id, [rowChain, colChain])
+                console.log("troubleshoot end of chain:", strId.id, [rowChain, colChain])
+                console.log(`end of chain till ${strIdEnd.innerText}`, strIdEnd.id);
+    
+                if (strIdEnd.innerText === currPlayer) {
+                  console.log(`the current player at point of checking if chain of cells is ${currPlayer}`)
+    
+                  idsToFlip.push(strId);
+                  console.log("Identify cells to flip:", idsToFlip);
+    
+                  event.target.innerText = currPlayer; //place the disc
+    
+                  function flipDiscs(){
+                    idsToFlip.map(
+                      (cell) => cell.innerText = currPlayer
+                    ); 
+                  }
+                  flipDiscs();
+                }
 
-            if (strIdEnd.innerText === currPlayer) {
-              console.log(`the current player at point of checking if chain of cells is ${currPlayer}`)
-
-              idsToFlip.push(strId);
-              console.log("Identify cells to flip:", idsToFlip);
-
-              event.target.innerText = currPlayer; //place the disc
-
-              function flipDiscs(){
-                idsToFlip.map(
-                  (cell) => cell.innerText = currPlayer
-                ); 
               }
-              flipDiscs();
-            } 
-          }
+
+              rowChain += directions[dir].x;
+              colChain += directions[dir].y;
+
+            }
+          };
+
+
+          
         }
 
         let scoreX = countScore(playerX);
@@ -409,11 +417,7 @@ function placeDisc(){
     //     currPlayerDisplay.innerText = currPlayer
     //   }
     // }
-
-
-
       }
-
     checkAdjCells(targetNumId);
 
 
@@ -456,7 +460,7 @@ function placeDisc(){
   // }
 
 // event target not recognized
-  // if(event.target.innerText = currPlayer){
+  // if(event.target.innerText === currPlayer){
   //     if (currPlayer === playerX){
   //       currPlayer = playerO;
   //       currPlayerDisplay.innerText = currPlayer

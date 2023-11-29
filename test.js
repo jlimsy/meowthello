@@ -306,12 +306,3 @@ output for [4,1]:
 
 */
 
-function checkAdjCells(array){
-  let x = array[0];
-  let y = array[1];
-  let strId = numIdToStr(array);
-
-  for (x = array[0]+1; x < LEVEL_EASY; x++){
-    console.log
-  }
-    } 

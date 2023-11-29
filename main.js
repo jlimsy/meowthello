@@ -344,44 +344,49 @@ function placeDisc(){
           if (row >=0 && row < LEVEL_EASY && col >=0 && col < LEVEL_EASY){
             if (strId.innerText === "" || strId.innerText === currPlayer){
               console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
-              console.log(`the current player at point of checking checking directly adj cells is ${currPlayer}`)
+              // console.log(`the current player at point of checking checking directly adj cells is ${currPlayer}`)
               continue;
             }
             
             if (strId.innerText !== currPlayer) {
-              console.log(`the current player at point of checking directly adj cells is ${currPlayer}`)
-
+              // console.log(`the current player at point of checking directly adj cells is ${currPlayer}`)
+              console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
               // does it not increment more than one??
-              let rowChain = row += directions[dir].x;
-              let colChain = col += directions[dir].y;
 
-              if (rowChain >=0 && rowChain < LEVEL_EASY && rowChain >=0 && colChain < LEVEL_EASY){
+              //for (row >=0; row < LEVEL_EASY; ){};
+                
+              for (let step = 1; step < LEVEL_EASY-1; step++){
+                let rowChain = array[0] + (step * directions[dir].x);
+                let colChain = array[1] + (step * directions[dir].y);
+                console.log("chain of coordinates", rowChain, colChain);
 
-                let strIdEnd = document.getElementById(numIdToStr([rowChain, colChain]));
-                console.log("troubleshoot end of chain:", strId.id, [rowChain, colChain])
-                console.log("troubleshoot end of chain:", strId.id, [rowChain, colChain])
-                console.log(`end of chain till ${strIdEnd.innerText}`, strIdEnd.id);
-    
-                if (strIdEnd.innerText === currPlayer) {
-                  console.log(`the current player at point of checking if chain of cells is ${currPlayer}`)
-    
-                  idsToFlip.push(strId);
-                  console.log("Identify cells to flip:", idsToFlip);
-    
-                  event.target.innerText = currPlayer; //place the disc
-    
-                  function flipDiscs(){
-                    idsToFlip.map(
-                      (cell) => cell.innerText = currPlayer
-                    ); 
+                if (rowChain >=0 && rowChain < LEVEL_EASY && colChain >=0 && colChain < LEVEL_EASY){
+
+                  let strIdEnd = document.getElementById(numIdToStr([rowChain, colChain]));
+                  console.log("troubleshoot end of chain:", strId.id, [rowChain, colChain])
+                  console.log(`end of chain till ${strIdEnd.innerText}`, strIdEnd.id);
+      
+                  if (strIdEnd.innerText === currPlayer) {
+                    console.log(`the current player at point of checking if chain of cells is ${currPlayer}`)
+      
+                    idsToFlip.push(strId);
+                    console.log("Identify cells to flip:", idsToFlip);
+                    event.target.innerText = currPlayer; //place the disc
+      
+                    function flipDiscs(){
+                      idsToFlip.map(
+                        (cell) => cell.innerText = currPlayer
+                      ); 
+                    }
+                    flipDiscs();
                   }
-                  flipDiscs();
-                }
-
               }
+            }
 
-              rowChain += directions[dir].x;
-              colChain += directions[dir].y;
+              
+
+              // rowChain += directions[dir].x;
+              // colChain += directions[dir].y;
 
             }
           };
@@ -406,33 +411,11 @@ function placeDisc(){
         }
       }
       scoreReport()
-
-    //switch player inside checkAdjCells switches player fine, but player can put disc anywhere
-    // if(event.target.innerText = currPlayer){
-    //   if (currPlayer === playerX){
-    //     currPlayer = playerO;
-    //     currPlayerDisplay.innerText = currPlayer
-    //   } else if (currPlayer === playerO) {
-    //     currPlayer = playerX;
-    //     currPlayerDisplay.innerText = currPlayer
-    //   }
-    // }
       }
     checkAdjCells(targetNumId);
 
-
 // SWITCH PLAYER INSIDE OF placeDisc() BUT OUTSIDE checkAdjCells();
 
-//using this allows the correct valid square, but changes player on click even if disc has not been placed
-    //     if (currPlayer === playerX){
-    //   currPlayer = playerO;
-    //   currPlayerDisplay.innerText = currPlayer
-    // } else if (currPlayer === playerO) {
-    //   currPlayer = playerX;
-    //   currPlayerDisplay.innerText = currPlayer
-    // }
-
-    //tries to player switch ONLY WHEN event target has an innerText, this works:
     if(event.target.innerText === currPlayer){
       if (currPlayer === playerX){
         currPlayer = playerO;
@@ -447,25 +430,3 @@ function placeDisc(){
   )
   })
 }
-
-// SWITCH PLAYER OUTSIDE OF placeDisc()
-
-// putting this outside placeDisc function does not activate player switch when disc is placed
-  // if (currPlayer === playerX){
-  //   currPlayer = playerO;
-  //   currPlayerDisplay.innerText = currPlayer
-  // } else if (currPlayer === playerO) {
-  //   currPlayer = playerX;
-  //   currPlayerDisplay.innerText = currPlayer
-  // }
-
-// event target not recognized
-  // if(event.target.innerText === currPlayer){
-  //     if (currPlayer === playerX){
-  //       currPlayer = playerO;
-  //       currPlayerDisplay.innerText = currPlayer
-  //     } else if (currPlayer === playerO) {
-  //       currPlayer = playerX;
-  //       currPlayerDisplay.innerText = currPlayer
-  //     }
-  //   }

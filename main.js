@@ -332,7 +332,7 @@ function placeDisc(){
           {x: +1, y: -1}, //southwest
         ]
 
-        let idsToFlip = [];
+        
 
         for (let dir in directions){
           let row = array[0] + directions[dir].x;
@@ -358,24 +358,36 @@ function placeDisc(){
               for (let step = 1; step < LEVEL_EASY-1; step++){
                 let rowChain = array[0] + (step * directions[dir].x);
                 let colChain = array[1] + (step * directions[dir].y);
-                console.log("chain of coordinates", rowChain, colChain);
+                // console.log("chain of coordinates", rowChain, colChain);
 
                 if (rowChain >=0 && rowChain < LEVEL_EASY && colChain >=0 && colChain < LEVEL_EASY){
 
                   let strIdEnd = document.getElementById(numIdToStr([rowChain, colChain]));
-                  console.log("troubleshoot end of chain:", strId.id, [rowChain, colChain])
-                  console.log(`end of chain till ${strIdEnd.innerText}`, strIdEnd.id);
+                  // console.log("troubleshoot end of chain:", strId.id, [rowChain, colChain])
+                  console.log(strIdEnd.id, `${strIdEnd.innerText}`);
       
                   if (strIdEnd.innerText === currPlayer) {
-                    console.log(`the current player at point of checking if chain of cells is ${currPlayer}`)
-      
-                    idsToFlip.push(strId);
-                    console.log("Identify cells to flip:", idsToFlip);
+
+                    let idsToFlip = [];
+                    // console.log(`the current player at point of checking if chain of cells is ${currPlayer}`)
+                    
+                    for (let i = 1; i < step; i++) {
+                      let rowFlip = array[0] + i * directions[dir].x;
+                      let colFlip = array[1] + i * directions[dir].y;
+                      idsToFlip.push([rowFlip, colFlip]);
+                    }
+
+                    console.log("idsToFlip:", idsToFlip)
+
+                    // console.log("Identify cells to flip:", idsToFlip);
                     event.target.innerText = currPlayer; //place the disc
       
                     function flipDiscs(){
                       idsToFlip.map(
-                        (cell) => cell.innerText = currPlayer
+                        (cell) => {
+                          document.getElementById(numIdToStr(cell)).innerText = currPlayer
+                        }
+
                       ); 
                     }
                     flipDiscs();

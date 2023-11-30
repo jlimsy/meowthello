@@ -4,10 +4,13 @@ Reversi is a two-player game on a 8 x 8 board. Each player is represented a colo
 
 The game begins from the center of the grid with 2 discs representing each player. Player 1 (e.g. black) places his disc on an empty cell adjacent to discs of Player 2 (e.g. white), and all the discs of Player 2 (white) situated between the newly placed disc and will have their colour reversed to Player 1's colour (black).
 
-**Rules**
+### Rules
 
-- Discs can only be placed on an empty cell adjacent to cell occupied by color of the opposing player.
-- Disc at the end has to be of the same colour.
+- Disc can only be placed on an empty cell adjacent to cell occupied by opponent's disc.
+- Disc at the end of a chain of opponent discs (in any of the 8 directions - horizontal, vertical, diagonals) has to be player's disc.
+- Opponent's discs along the chain of the newly-placed disc and player's disc at the endf of chain will be flipped to player's discs.
+- Game ends when there are not valid cells or when all the cells of the grid are occupied.
+- The objective is get the most number of discs at the end of the game to win.
 
 ## Coding the game
 
@@ -19,6 +22,9 @@ Javascript, CSS, HTML
 
 1.  Set up a matrix of IDs to represent the individual cells of the grid (divs) - function matrixOfIds, tagCellsWithId
 2.  Select center cells which are occupied by discs of opposing players. - function centerIds
+
+![Alt text](<Screenshot 2023-11-30 at 9.53.49 PM.png>)
+
 3.  Invalid cells:
     3A. are not empty
     3B. have directly adjacent cells are all empty - function allAdjCellsEmpty

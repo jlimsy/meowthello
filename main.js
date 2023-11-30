@@ -1,11 +1,9 @@
 /*----- constants -----*/
 const playerX = "X";
 const playerO = "O";
-// Levels represent the number of rows and columns
 const GRID_SMALL = 6;
 const GRID_MEDIUM = 8;
 const GRID_LARGE = 10;
-
 let currPlayer = playerO;
 
 /*----- cached UI elements  -----*/
@@ -26,7 +24,6 @@ function setGrid(){
   tagCellsWithId(matrixOfIds(GRID_SMALL, GRID_SMALL));
   centerIds(GRID_SMALL);
   placeDisc(); 
-  scoreReport();
 }
 
 function tagCellsWithId(matrix) {
@@ -100,6 +97,19 @@ function getDirAdjIds(array){
 
     return validDirAdjIds;
 };
+
+function fillGrid(){
+  const players = [playerX, playerO];
+
+  document.querySelectorAll(".cell").forEach(
+    (cell) => {
+      const randomIndex = Math.floor(Math.random() * players.length);
+      const randomPlayers = players[randomIndex];
+      cell.innerText = randomPlayers
+    }
+  )
+  }
+
 
 // function getHorAndVerDirAdjIds(array){  
 //   let horAndVerdirAdjIds = [];
@@ -239,7 +249,9 @@ document.getElementById(startCells[3].toString()).innerText = playerX;
 
 function placeDisc(){
 
-  let isValidCell = false;
+  // if (gameOver){
+  //   return;
+  // }
 
   document.querySelector('.message').innerText = "Select a cell to place disc:";
 
@@ -253,7 +265,7 @@ function placeDisc(){
         //SPECIFY THE INVALID CELLS
         if (event.target.innerText !== ""){
           document.querySelector('.message').innerText = "Invalid Cell: This cell is occupied.";
-          return isValidCell = false;
+          return;
         }
 
         let targetNumId = strIdToNum(event.target.id); //event target id is a string - needs to be converted to num
@@ -266,13 +278,12 @@ function placeDisc(){
         // console.log("array of ids of directly adjacent cells converted to strings", strIdOfDirAdjCells)
 
        let allAdjCellsEmpty = strIdOfDirAdjCells.every(
-          (cell) => document.getElementById(cell).innerText === "Invalid Cell: Adjacent cells cannot be empty."
+          (cell) => document.getElementById(cell).innerText === ""
        )
 
        if (allAdjCellsEmpty){
-        // console.log("INVALID MOVE: All adjacent cells empty")
-        document.querySelector('.message').innerText = "Invalid Move:";
-        return isValidCell = false
+        document.querySelector('.message').innerText = "Invalid Move: All adjacent cells are empty.";
+        return
        };
 
        // SPECIFY THE VALID CELLS
@@ -295,18 +306,18 @@ function placeDisc(){
           let row = array[0] + directions[dir].x;
           let col = array[1] + directions[dir].y;
 
-          let strId = document.getElementById(numIdToStr([row, col]));
+          let strIdAdjCells = document.getElementById(numIdToStr([row, col]));
           // console.log(strId.id, "innerText:", strId.innerText);
 
           if (withinGridSize(row, col, GRID_SMALL)){
-            if (strId.innerText === "" || strId.innerText === currPlayer){
-              console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
+            if (strIdAdjCells.innerText === "" || strIdAdjCells.innerText === currPlayer){
+              // console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
               continue;
             }
             
-            if (strId.innerText !== currPlayer) {
+            if (strIdAdjCells.innerText !== currPlayer) {
 
-              console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
+              // console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
                 
               for (let step = 1; step < GRID_SMALL-1; step++){
                 let rowChain = array[0] + (step * directions[dir].x);
@@ -315,12 +326,13 @@ function placeDisc(){
 
                 if (withinGridSize(rowChain, colChain, GRID_SMALL)){
 
-                  let strIdEnd = document.getElementById(numIdToStr([rowChain, colChain]));
-                  console.log(strIdEnd.id, `${strIdEnd.innerText}`);
-      
-                  if (strIdEnd.innerText === currPlayer) {
-                    isValidCell = true;
+                  let strIdEndOfChain = document.getElementById(numIdToStr([rowChain, colChain]));
+                  // console.log(strIdEnd.id, `${strIdEnd.innerText}`);
+                  
+                  if (strIdEndOfChain.innerText === currPlayer) {
                     document.querySelector('.message').innerText = "Valid Cell";
+                    // isValidCell = true;
+                    // console.log(strIdEndOfChain,"03 isValidCell:", isValidCell)
                     event.target.innerText = currPlayer; //place the disc
                     
                     for (let i = 1; i < step; i++) {
@@ -329,15 +341,34 @@ function placeDisc(){
                       idsToFlip.push([rowFlip, colFlip]);
                     }
                     
-                    console.log("idsToFlip:", idsToFlip);
+                    function gameStatus(){
+                      let gameOver;
+
+                      let entireGrid = Array.from(document.querySelectorAll(".cell"))
+
+                      let allCellsOccupied = entireGrid.every(
+                          (cell) => cell.innerText !== ""
+                        )
+              
+                        if (allCellsOccupied){
+                          document.querySelector(".game status").innerText = "Game Over!"
+                          alert("game over!")
+
+                          return gameOver = true;
+                        }
+              
+                    }
+
+                    gameStatus();
+
+                    // console.log("idsToFlip:", idsToFlip);
+
                     break;
                     
-                  } else if (strIdEnd.innerText !== currPlayer){
-                    isValidCell = false;
-                    document.querySelector('.message').innerText = `Invalid Cell: Line of opponent-occupied cells does not end with Disc ${currPlayer}`;
-                  }
+                  } 
                 }
               }
+              
               function flipDiscs(){
                 idsToFlip.map(
                   (cell) => {
@@ -346,12 +377,9 @@ function placeDisc(){
 
                 ); 
               }
-              flipDiscs();
-
-              // rowChain += directions[dir].x;
-              // colChain += directions[dir].y;
-
+              flipDiscs()
             }
+
           };
 
         }
@@ -362,11 +390,11 @@ function placeDisc(){
         document.querySelector("#countO").innerText = scoreO;
         
       }
-      checkAdjCells(targetNumId);
 
+      checkAdjCells(targetNumId);
       
       // SWITCH PLAYER INSIDE OF placeDisc() BUT OUTSIDE checkAdjCells();
-      
+    
       if(event.target.innerText === currPlayer){
         if (currPlayer === playerX){
           currPlayer = playerO;
@@ -380,32 +408,24 @@ function placeDisc(){
     }
     )
   })
-  if (isValidCell === true){
-    document.querySelectorAll(".cell").forEach(
-      (cell) => {
-        cell.addEventListener("mouseover", function(event){
+}
 
-          console.log("hello!")
-        }
-        )
-      })
+function scoreReport(scoreX, scoreO){    
+  document.querySelector(".game").innerText = "Game Over!"
+    if (scoreX > scoreO) {
+      let winner = "Player X";
+      document.querySelector(".winner").innerText = `${winner} has won!`
+    } else if (scoreO > scoreX) {
+      let winner = "Player O";
+      document.querySelector(".winner").innerText = `${winner} has won!`
+    } else if (scoreX === scoreO) {
+      document.querySelector(".winner").innerText = `It's a tie!`
   }
-
 }
 
-function scoreReport(scoreX, scoreO){              
-  if (scoreX > scoreO) {
-  let winner = "Player X";
-  document.querySelector(".winner").innerText = `${winner} has won!`
-} else if (scoreO > scoreX) {
-  let winner = "Player O";
-  document.querySelector(".winner").innerText = `${winner} has won!`
-} else if (scoreX === scoreO) {
-  document.querySelector(".winner").innerText = `It's a tie!`
-}
-}
-scoreReport(countScore(playerX), countScore(playerO))
+// scoreReport(countScore(playerX), countScore(playerO))
 
-function gameOver(){
-
-}
+document.getElementById("fill").addEventListener("click", function(){
+  fillGrid();
+  scoreReport(countScore(playerX), countScore(playerO))
+})

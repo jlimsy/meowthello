@@ -26,11 +26,14 @@ Javascript, CSS, HTML
 ![Alt text](public/screenshot-01.png)
 
 3.  Invalid cells:
-    - are not empty
-    - have directly adjacent cells are all empty - function allAdjCellsEmpty
+
+- are not empty
+- have directly adjacent cells are all empty - function allAdjCellsEmpty
+
 4.  Valid cells - valid cells are highlighted when mouseover
-    - have adjacent cells that contain disc of opposing player - function checkAdjCells
-    - have the current player's disc situated at the end of chain of opponent cells
+
+- have adjacent cells that contain disc of opposing player - function checkAdjCells
+- have the current player's disc situated at the end of chain of opponent cells
 
 ![Alt text](public/screenshot-02.png)
 

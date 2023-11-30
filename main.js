@@ -2,9 +2,9 @@
 const playerX = "X";
 const playerO = "O";
 // Levels represent the number of rows and columns
-const LEVEL_EASY = 6;
-const LEVEL_MEDIUM = 8;
-const LEVEL_HARD = 10;
+const GRID_SMALL = 6;
+const GRID_MEDIUM = 8;
+const GRID_LARGE = 10;
 
 let currPlayer = playerO;
 
@@ -23,9 +23,10 @@ function setUpButtons() {
 /*----- functions -----*/
 
 function setGrid(){
-  tagCellsWithId(matrix0fIds(LEVEL_EASY, LEVEL_EASY));
-  centerIds(LEVEL_EASY);
+  tagCellsWithId(matrixOfIds(GRID_SMALL, GRID_SMALL));
+  centerIds(GRID_SMALL);
   placeDisc(); 
+  scoreReport();
 }
 
 function tagCellsWithId(matrix) {
@@ -47,7 +48,7 @@ function centerIds(gridWidth){
   return array;
 };
 
-function matrix0fIds(rows, columns){
+function matrixOfIds(rows, columns){
   let matrix = [];
   for (let i = 0; i < rows; i++){
       for (let j = 0; j < columns; j++){
@@ -75,6 +76,10 @@ function numIdToStr(array){
   return strId;
 };
 
+function withinGridSize(row, col, gridSize){
+  return row >=0 && row < gridSize && col >=0 && col < gridSize
+};
+
 function getDirAdjIds(array){
   let dirAdjIds = [];
   let x = array[0];
@@ -90,120 +95,120 @@ function getDirAdjIds(array){
 
     let validDirAdjIds = dirAdjIds.filter(
       (array) => array.every( 
-        (num) => num >= 0 && num < LEVEL_EASY)
+        (num) => num >= 0 && num < GRID_SMALL)
     );
 
     return validDirAdjIds;
 };
 
-function getHorAndVerDirAdjIds(array){  
-  let horAndVerdirAdjIds = [];
-  let x = array[0];
-  let y = array[1];
-  horAndVerdirAdjIds.push(
-    [x-1, y],[x+1, y], //vertically adjacent 
-    [x, y-1], [x, y+1], //horizontally adjacent
-  );
-  return horAndVerdirAdjIds;
-};
+// function getHorAndVerDirAdjIds(array){  
+//   let horAndVerdirAdjIds = [];
+//   let x = array[0];
+//   let y = array[1];
+//   horAndVerdirAdjIds.push(
+//     [x-1, y],[x+1, y], //vertically adjacent 
+//     [x, y-1], [x, y+1], //horizontally adjacent
+//   );
+//   return horAndVerdirAdjIds;
+// };
 
-function getLine0fCells(array){
-  let lineOfCells = [];
-  let x = array[0];
-  let y = array[1];
+// function getLineOfCells(array){
+//   let lineOfCells = [];
+//   let x = array[0];
+//   let y = array[1];
 
-  // horizontal
+//   // horizontal
 
-  y = array[1];
-  for (x = array[0]-1; x >= 0; x--){
-    lineOfCells.push(
-      [x, y]
-      ); 
-  }
+//   y = array[1];
+//   for (x = array[0]-1; x >= 0; x--){
+//     lineOfCells.push(
+//       [x, y]
+//       ); 
+//   }
 
-  for (x = array[0]+1; x < LEVEL_EASY; x++){
-    lineOfCells.push(
-      [x, y]
-      ); 
-  }
+//   for (x = array[0]+1; x < GRID_SMALL; x++){
+//     lineOfCells.push(
+//       [x, y]
+//       ); 
+//   }
 
-  // vertical
+//   // vertical
 
-  x = array[0];
-  for (y = array[1]-1; y >= 0; y--){
-    lineOfCells.push(
-      [x, y]
-      ); 
-  }
+//   x = array[0];
+//   for (y = array[1]-1; y >= 0; y--){
+//     lineOfCells.push(
+//       [x, y]
+//       ); 
+//   }
 
-  for (y = array[1]+1; y < LEVEL_EASY; y++){
-    lineOfCells.push(
-      [x, y]
-      ); 
-  }
+//   for (y = array[1]+1; y < GRID_SMALL; y++){
+//     lineOfCells.push(
+//       [x, y]
+//       ); 
+//   }
 
-  // diagonal \northwest
+//   // diagonal \northwest
 
-  x = array[0];
-  y = array[1];
+//   x = array[0];
+//   y = array[1];
 
-  for (x = array[0], y = array[1]; x < LEVEL_EASY && y < LEVEL_EASY ; x++, y++){
-      if (x === LEVEL_EASY-1 || y === LEVEL_EASY-1  ){
-        break;
-      } else {
-        lineOfCells.push(
-          [x+1, y+1],
-          )
-        }
-    }
+//   for (x = array[0], y = array[1]; x < GRID_SMALL && y < GRID_SMALL ; x++, y++){
+//       if (x === GRID_SMALL-1 || y === GRID_SMALL-1  ){
+//         break;
+//       } else {
+//         lineOfCells.push(
+//           [x+1, y+1],
+//           )
+//         }
+//     }
 
-  // diagional \southeast
+//   // diagional \southeast
 
-  x = array[0];
-  y = array[1];
+//   x = array[0];
+//   y = array[1];
 
-  for (x = array[0], y = array[1]; x >= 0 && y >= 0 ; x--, y--){
-    if (y === 0 || x === 0){
-      break;
-    } else {
-      lineOfCells.push(
-        [x-1, y-1],
-        )
-      }
-  }
+//   for (x = array[0], y = array[1]; x >= 0 && y >= 0 ; x--, y--){
+//     if (y === 0 || x === 0){
+//       break;
+//     } else {
+//       lineOfCells.push(
+//         [x-1, y-1],
+//         )
+//       }
+//   }
 
-  //diagonal /northeast
+//   //diagonal /northeast
 
-  x = array[0];
-  y = array[1];
+//   x = array[0];
+//   y = array[1];
 
-  for (x = array[0], y = array[1]; x >=0 && y < LEVEL_EASY; x--, y++){
-    if (x === 0 || y === LEVEL_EASY-1){
-      break;
-    } else {
-      lineOfCells.push(
-        [x-1, y+1],
-        )
-      }
-    }
+//   for (x = array[0], y = array[1]; x >=0 && y < GRID_SMALL; x--, y++){
+//     if (x === 0 || y === GRID_SMALL-1){
+//       break;
+//     } else {
+//       lineOfCells.push(
+//         [x-1, y+1],
+//         )
+//       }
+//     }
 
-  //diagonal /southwest
-  x = array[0];
-  y = array[1];
+//   //diagonal /southwest
+//   x = array[0];
+//   y = array[1];
 
-  for (x = array[0], y = array[1]; x < LEVEL_EASY && y > 0; x++, y--){
-    if (x === LEVEL_EASY-1 ){
-      break;
-    } else {
-      lineOfCells.push(
-        [x+1, y-1],
-        )
-      }
-    }
+//   for (x = array[0], y = array[1]; x < GRID_SMALL && y > 0; x++, y--){
+//     if (x === GRID_SMALL-1 ){
+//       break;
+//     } else {
+//       lineOfCells.push(
+//         [x+1, y-1],
+//         )
+//       }
+//     }
 
-  return lineOfCells;
+//   return lineOfCells;
 
-};
+// };
 
 function countScore(string){
   let score = 0;
@@ -226,66 +231,17 @@ setGrid();
 /*----- code is based on flow rather than MVC -----*/
 
 
-const startCells = centerIds(LEVEL_EASY); // produce an array of the center coordinates from grid size (determined by level) 
+const startCells = centerIds(GRID_SMALL); // produce an array of the center coordinates from grid size (determined by level) 
 document.getElementById(startCells[0].toString()).innerText = playerX;
 document.getElementById(startCells[1].toString()).innerText = playerO;
 document.getElementById(startCells[2].toString()).innerText = playerO;
 document.getElementById(startCells[3].toString()).innerText = playerX;
 
-
-// document.querySelectorAll(".cell").forEach(
-//   (cell) => {
-//     if (cell.innerText === ""){
-//       cell.addEventListener("mouseover", function(event){
-//         let numId = strIdToNum(event.target.id);
-//         let dirAdjCells = getDirAdjIds(numId);
-//         //console.log("Directly adjacent cells:", dirAdjCells);
-//       })}});
-          
-// dirAdjCells.forEach(
-// (cell) => {
-//   let strIdDirAdjCells = numIdToStr(cell);
-
-//   if (document.getElementById(strIdDirAdjCells).innerText !== ""){
-//     document.getElementById(event.target.id).addEventListener("mouseover", function(event){
-//       event.target.classList.add("available");
-//     });
-//     document.getElementById(event.target.id).addEventListener("mouseout", function(event){
-//       event.target.classList.remove("available");
-//     });
-//     document.getElementById(event.target.id).addEventListener("click", function(event){
-//       event.target.innerText = currPlayer;
-//     })}})
-
-// if (event.target.innerText === playerX){
-//   currPlayer = playerO;
-//   console.log("playerO activated")
-// } else {
-//   currPlayer = playerX;
-//   console.log("playerX activated")
-// }
-// // console.log(event.target.id);
-
-// let line0fCells = getLine0fCells(strIdToNum(event.target.id));
-// line0fCells.forEach(
-//   (cell) => {
-//     let strIdLine0fCells = numIdToStr(cell);
-//     if (document.getElementById(strIdLine0fCells).innerText === currPlayer){
-//       document.getElementById(event.target.id).addEventListener("click", function(event){
-//         document.getElementById(strIdLine0fCells).classList.add("test");
-//       });
-//     }
-//   }
-// )
-// // console.log("Line of cells:", line0fCells);
-
-// if (document.getElementById(event.target.id).innerText !== "") {
-//   document.getElementById(event.target.id).addEventListener("mouseover", function(event){
-//     event.target.classList.remove("available");
-//   });
-// };
-
 function placeDisc(){
+  let isValidCell = false;
+
+
+
   currPlayerDisplay.innerText = currPlayer
   
   document.querySelectorAll(".cell").forEach(
@@ -295,8 +251,8 @@ function placeDisc(){
   
         //SPECIFY THE INVALID CELLS
         if (event.target.innerText !== ""){
-          console.log("INVALID MOVE: Cell is not empty");
-          return;
+          document.querySelector('.message').innerText = "Invalid Cell: This cell is not empty.";
+          return isValidCell = false;
         }
 
         let targetNumId = strIdToNum(event.target.id); //event target id is a string - needs to be converted to num
@@ -309,12 +265,13 @@ function placeDisc(){
         // console.log("array of ids of directly adjacent cells converted to strings", strIdOfDirAdjCells)
 
        let allAdjCellsEmpty = strIdOfDirAdjCells.every(
-          (cell) => document.getElementById(cell).innerText === ""
+          (cell) => document.getElementById(cell).innerText === "Invalid Cell: Adjacent cells cannot be empty."
        )
 
        if (allAdjCellsEmpty){
-        console.log("INVALID MOVE: All adjacent cells empty")
-        return
+        // console.log("INVALID MOVE: All adjacent cells empty")
+        document.querySelector('.message').innerText = "Invalid Move:";
+        return isValidCell = false
        };
 
        // SPECIFY THE VALID CELLS
@@ -340,34 +297,29 @@ function placeDisc(){
           let strId = document.getElementById(numIdToStr([row, col]));
           // console.log(strId.id, "innerText:", strId.innerText);
 
-          if (row >=0 && row < LEVEL_EASY && col >=0 && col < LEVEL_EASY){
+          if (row >=0 && row < GRID_SMALL && col >=0 && col < GRID_SMALL){
             if (strId.innerText === "" || strId.innerText === currPlayer){
               console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
-              // console.log(`the current player at point of checking checking directly adj cells is ${currPlayer}`)
               continue;
             }
             
             if (strId.innerText !== currPlayer) {
-              // console.log(`the current player at point of checking directly adj cells is ${currPlayer}`)
-              console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
-              // does it not increment more than one??
 
-              //for (row >=0; row < LEVEL_EASY; ){};
+              console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
                 
-              for (let step = 1; step < LEVEL_EASY-1; step++){
+              for (let step = 1; step < GRID_SMALL-1; step++){
                 let rowChain = array[0] + (step * directions[dir].x);
                 let colChain = array[1] + (step * directions[dir].y);
                 // console.log("chain of coordinates", rowChain, colChain);
 
-                if (rowChain >=0 && rowChain < LEVEL_EASY && colChain >=0 && colChain < LEVEL_EASY){
+                if (rowChain >=0 && rowChain < GRID_SMALL && colChain >=0 && colChain < GRID_SMALL){
 
                   let strIdEnd = document.getElementById(numIdToStr([rowChain, colChain]));
-                  // console.log("troubleshoot end of chain:", strId.id, [rowChain, colChain])
                   console.log(strIdEnd.id, `${strIdEnd.innerText}`);
       
                   if (strIdEnd.innerText === currPlayer) {
-
-                    // console.log(`the current player at point of checking if chain of cells is ${currPlayer}`)
+                    isValidCell = true;
+                    event.target.innerText = currPlayer; //place the disc
                     
                     for (let i = 1; i < step; i++) {
                       let rowFlip = array[0] + i * directions[dir].x;
@@ -376,14 +328,8 @@ function placeDisc(){
                     }
                     
                     console.log("idsToFlip:", idsToFlip);
-                    event.target.innerText = currPlayer; //place the disc
                     break;
-
-                    // console.log("Identify cells to flip:", idsToFlip);
                   }
-
-
-    
                 }
               }
               function flipDiscs(){
@@ -396,8 +342,6 @@ function placeDisc(){
               }
               flipDiscs();
 
-              
-
               // rowChain += directions[dir].x;
               // colChain += directions[dir].y;
 
@@ -405,41 +349,58 @@ function placeDisc(){
           };
 
 
-          
         }
 
         let scoreX = countScore(playerX);
         let scoreO = countScore(playerO);
-        document.querySelector("#countX").innerText = ` ${scoreX}`;
-        document.querySelector("#countO").innerText = ` ${scoreO}`;
-        function scoreReport(){              
-          if (scoreX > scoreO) {
-          let winner = "Player X";
-          document.querySelector(".status").innerText = `${winner} has won!`
-        } else if (scoreO > scoreX) {
-          let winner = "Player O";
-          document.querySelector(".status").innerText = `${winner} has won!`
-        } else if (scoreX === scoreO) {
-          document.querySelector(".status").innerText = `It's a tie!`
+        document.querySelector("#countX").innerText = scoreX;
+        document.querySelector("#countO").innerText = scoreO;
+        
+      }
+      checkAdjCells(targetNumId);
+
+      
+      // SWITCH PLAYER INSIDE OF placeDisc() BUT OUTSIDE checkAdjCells();
+      
+      if(event.target.innerText === currPlayer){
+        if (currPlayer === playerX){
+          currPlayer = playerO;
+          currPlayerDisplay.innerText = currPlayer
+        } else if (currPlayer === playerO) {
+          currPlayer = playerX;
+          currPlayerDisplay.innerText = currPlayer
         }
       }
-      scoreReport()
-      }
-    checkAdjCells(targetNumId);
-
-// SWITCH PLAYER INSIDE OF placeDisc() BUT OUTSIDE checkAdjCells();
-
-    if(event.target.innerText === currPlayer){
-      if (currPlayer === playerX){
-        currPlayer = playerO;
-        currPlayerDisplay.innerText = currPlayer
-      } else if (currPlayer === playerO) {
-        currPlayer = playerX;
-        currPlayerDisplay.innerText = currPlayer
-      }
+      
     }
-
-  }
-  )
+    )
   })
+  if (isValidCell === true){
+    document.querySelectorAll(".cell").forEach(
+      (cell) => {
+        cell.addEventListener("mouseover", function(event){
+
+          console.log("hello!")
+        }
+        )
+      })
+  }
+
+}
+
+function scoreReport(scoreX, scoreO){              
+  if (scoreX > scoreO) {
+  let winner = "Player X";
+  document.querySelector(".winner").innerText = `${winner} has won!`
+} else if (scoreO > scoreX) {
+  let winner = "Player O";
+  document.querySelector(".winner").innerText = `${winner} has won!`
+} else if (scoreX === scoreO) {
+  document.querySelector(".winner").innerText = `It's a tie!`
+}
+}
+scoreReport(countScore(playerX), countScore(playerO))
+
+function gameOver(){
+  
 }

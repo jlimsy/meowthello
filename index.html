@@ -6,13 +6,16 @@
     <title>Othello</title>
     <link rel="stylesheet" href = "style.css">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   </head>
   <body>
 
     <div id = "screenStart">
       <h1>Othello</h1>
-      <p>inspired by Othello (<span class="em">Ot-hello</span>)</p>
-      <h2>Select your level:</h2>
+      <p>Select your level:</p>
       <!-- 6 by 6 -->
       <button id = "buttonEasy">Small</button> 
       <!-- 8 by 8 -->
@@ -22,10 +25,12 @@
     </div>
 
     <div id = "counter">
-      <div class = "player">Player X: <span id = "countX"></span></div>
-      <div class = "current">Current Player <span id = "current"></span></div>
-      <div class = "player">Player O: <span id = "countO"></span></div>
+      <div class = "player">Player X: <span class= "score" id = "countX"></span></div>
+      <div class = "current"><h2>Current Player: <span id = "current"></span></h2></div>
+      <div class = "player">Player O: <span class="score" id = "countO"></span></div>
     </div>
+
+    <div id = "status"><span class="message"></span></div>
 
 
     <div id = "screenGame">
@@ -33,7 +38,7 @@
     </div>
 
     <div id = "screenEnd">
-      <h1><span class = "status"></span></h1>
+      <h1><span class = "winner"></span></h1>
       <button id = "restart" onClick="window.location.reload();">Restart</button>
     </div>
 

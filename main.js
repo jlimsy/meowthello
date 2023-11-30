@@ -275,9 +275,9 @@ function placeDisc(){
        };
 
        // SPECIFY THE VALID CELLS
-      let idsToFlip = [];
 
       function checkAdjCells(array){
+        let idsToFlip = [];
 
         const directions = [
           {x: -1, y: 0}, //up
@@ -319,6 +319,7 @@ function placeDisc(){
       
                   if (strIdEnd.innerText === currPlayer) {
                     isValidCell = true;
+                    document.querySelector('.message').innerText = "Valid Cell";
                     event.target.innerText = currPlayer; //place the disc
                     
                     for (let i = 1; i < step; i++) {
@@ -329,6 +330,9 @@ function placeDisc(){
                     
                     console.log("idsToFlip:", idsToFlip);
                     break;
+                  } else if (strIdEnd.innerText !== currPlayer){
+                    isValidCell = false;
+                    document.querySelector('.message').innerText = `Invalid Cell: Line of occupied cells does not end with Disc ${currPlayer}`;
                   }
                 }
               }
@@ -402,5 +406,5 @@ function scoreReport(scoreX, scoreO){
 scoreReport(countScore(playerX), countScore(playerO))
 
 function gameOver(){
-  
+
 }

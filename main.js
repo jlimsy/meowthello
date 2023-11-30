@@ -23,6 +23,7 @@ function setUpButtons() {
 function setGrid(){
   tagCellsWithId(matrixOfIds(GRID_SMALL, GRID_SMALL));
   centerIds(GRID_SMALL);
+  highlightCells();
   placeDisc(); 
 }
 
@@ -407,6 +408,129 @@ function placeDisc(){
       
     }
     )
+  })
+}
+
+function highlightCells(){
+  
+  document.querySelectorAll(".cell").forEach(
+    (cell) => {
+      cell.addEventListener("mouseover", function(event){
+  
+        //SPECIFY THE INVALID CELLS
+        if (event.target.innerText !== ""){
+          return;
+        }
+
+        let targetNumId = strIdToNum(event.target.id); //event target id is a string - needs to be converted to num
+        let dirAdjCells = getDirAdjIds(targetNumId); //numId of event target listener generates an output of ids for adjacent cells
+        // console.log("array of ids of directly adjacent cells", dirAdjCells);
+
+        let strIdOfDirAdjCells = dirAdjCells.map(
+          (cell) => numIdToStr(cell)
+        )
+        // console.log("array of ids of directly adjacent cells converted to strings", strIdOfDirAdjCells)
+
+       let allAdjCellsEmpty = strIdOfDirAdjCells.every(
+          (cell) => document.getElementById(cell).innerText === ""
+       )
+
+       if (allAdjCellsEmpty){
+        return;
+       };
+
+       // SPECIFY THE VALID CELLS
+
+      function checkAdjCells(array){
+        let idsToFlip = [];
+
+        const directions = [
+          {x: -1, y: 0}, //up
+          {x: +1, y: 0}, //down
+          {x: 0, y: -1}, //left
+          {x: 0, y: +1}, //right
+          {x: +1, y: +1}, //southeast
+          {x: -1, y:-1}, //northwest
+          {x: -1, y: +1}, //northeast
+          {x: +1, y: -1}, //southwest
+        ]
+
+        for (let dir in directions){
+          let row = array[0] + directions[dir].x;
+          let col = array[1] + directions[dir].y;
+
+          let strIdAdjCells = document.getElementById(numIdToStr([row, col]));
+          // console.log(strId.id, "innerText:", strId.innerText);
+
+          if (withinGridSize(row, col, GRID_SMALL)){
+            if (strIdAdjCells.innerText === "" || strIdAdjCells.innerText === currPlayer){
+              // console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
+              continue;
+            }
+            
+            if (strIdAdjCells.innerText !== currPlayer) {
+
+              // console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
+                
+              for (let step = 1; step < GRID_SMALL-1; step++){
+                let rowChain = array[0] + (step * directions[dir].x);
+                let colChain = array[1] + (step * directions[dir].y);
+                // console.log("chain of coordinates", rowChain, colChain);
+
+                if (withinGridSize(rowChain, colChain, GRID_SMALL)){
+
+                  let strIdEndOfChain = document.getElementById(numIdToStr([rowChain, colChain]));
+                  // console.log(strIdEnd.id, `${strIdEnd.innerText}`);
+                  
+                  if (strIdEndOfChain.innerText === currPlayer) {
+                    event.target.classList.add("available");
+                    
+                    for (let i = 1; i < step; i++) {
+                      let rowFlip = array[0] + i * directions[dir].x;
+                      let colFlip = array[1] + i * directions[dir].y;
+                      idsToFlip.push([rowFlip, colFlip]);
+                    }
+
+                    break;
+                    
+                  } 
+                }
+              }
+              
+            }
+
+          };
+
+        }
+
+        let scoreX = countScore(playerX);
+        let scoreO = countScore(playerO);
+        document.querySelector("#countX").innerText = scoreX;
+        document.querySelector("#countO").innerText = scoreO;
+        
+      }
+
+      checkAdjCells(targetNumId);
+      
+      // SWITCH PLAYER INSIDE OF placeDisc() BUT OUTSIDE checkAdjCells();
+    
+      if(event.target.innerText === currPlayer){
+        if (currPlayer === playerX){
+          currPlayer = playerO;
+          currPlayerDisplay.innerText = currPlayer
+        } else if (currPlayer === playerO) {
+          currPlayer = playerX;
+          currPlayerDisplay.innerText = currPlayer
+        }
+      }
+      
+    }
+    )
+    
+    cell.addEventListener("mouseout", function(event){
+      cell.classList.remove("available");
+    })
+
   })
 }
 

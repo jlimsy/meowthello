@@ -9,62 +9,31 @@ The game begins from the center of the grid with 2 discs representing each playe
 - Discs can only be placed on an empty cell adjacent to cell occupied by color of the opposing player.
 - Disc at the end has to be of the same colour.
 
-## Coding the game -
+## Coding the game
 
-### Screens:
+### Languages
 
-#### 1. screenStart
-
-**HTML Elements**
-
-- buttonStart
-- buttonLevel
-- buttonInstructions (optional)
-
-**DOM**
-
-- buttonStart > screenGame (see 2)
-- buttonInstructions > screenInstructions
-
-#### 2. screenGame
-
-**HTML Elements**
-
-- Create 8 x 8 board
-- id each boardCell:
-- [0][0], [0][1], [0][2], [0][3], [0][4], [0][5]
-- [1][0], [1][1], [1][2]
-- selectColour - select your color (or automatically assigned such that first player will always be black)
-
-**DOM**
-
-- selectTile - select adjacent empty grid cell to place disc > blackDisc appears
+Javascript, CSS, HTML
 
 ### Logic
 
-- Initial tiles are fixed at positions:
-- board[2][2]: O | board[2][3]: X
-- board[3][2]: X | board[3][3]: 0 (6 by 6 grid)
-- discs can only be placed in cells:
-  - IF it is empty: [x][y] = ""
-  - AND when the horizontally adjacent ([x-1][y] || [x+1][y]) have a disc that is !== currPlayer
-  - AND when the vertically adjacent: ([x][y-1] || [x][y+1]) have a disc that is !== currPlayer
-  - AND when the diagonally adjacent: [x-1][y-1] || [x+1][y-1] || [x-1][y+1] || [x+1][y+1] !== currPlayer
-  - AND when the cell at the end of a line of discs of prevPlayer (horizontally, vertically, diagnonally) == currPlayer
+1.  Set up a matrix of IDs to represent the individual cells of the grid (divs) - function matrixOfIds, tagCellsWithId
+2.  Select center cells which are occupied by discs of opposing players. - function centerIds
+3.  Invalid cells:
+    3A. are not empty
+    3B. have directly adjacent cells are all empty - function allAdjCellsEmpty
+4.  Valid cells - valid cells are highlighted when mouseover
+    4A. have adjacent cells that contain disc of opposing player - function checkAdjCells
+    4B. have the current player's disc situated at the end of chain of opponent cells
+5.  Opponent discs sandwiched between end of chain and newly-placed disc are flipped to current player's.
+6.  Switch player until no more valid moves or when all the cells in the grid are occupied.
 
-_How is this done?_
+### Live URL
 
-currPlayer wnat to place a disc [x][y], if any of the cells (indicated above) !== ""
-check vertically upwards:
+https://othello-three.vercel.app/
 
-- IF [x][y-1] !== "", check if [x][y-2], [x][y-3], [x][y-4]... === disc of currPlayer
-- IF [x][]
+### Next Steps
 
-- Once a cell with disc !== currPlayer has been detected,
-
-### Model - Source of truth / things to keep track of?
-
-- Level and grid size
-- Registering which cell has been occupied
-- Registering the current player, so that that it will be the next player's turn
-- countOfDiscs at the end for winner
+- Implement Game Over even when grid is not filled
+- Change the grid size when players press on small, medium, large
+- Replace discs with images of cats

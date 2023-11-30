@@ -26,13 +26,22 @@ Javascript, CSS, HTML
 ![Alt text](public/screenshot-01.png)
 
 3.  Invalid cells:
-    3A. are not empty
-    3B. have directly adjacent cells are all empty - function allAdjCellsEmpty
+    - are not empty
+    - have directly adjacent cells are all empty - function allAdjCellsEmpty
 4.  Valid cells - valid cells are highlighted when mouseover
-    4A. have adjacent cells that contain disc of opposing player - function checkAdjCells
-    4B. have the current player's disc situated at the end of chain of opponent cells
+    - have adjacent cells that contain disc of opposing player - function checkAdjCells
+    - have the current player's disc situated at the end of chain of opponent cells
+
+![Alt text](public/screenshot-02.png)
+
 5.  Opponent discs sandwiched between end of chain and newly-placed disc are flipped to current player's.
+
+![Alt text](public/screenshot-03.png)
+
 6.  Switch player until no more valid moves or when all the cells in the grid are occupied.
+7.  Player with the most number of discs wins, otherwise, it's a tie.
+
+![Alt text](public/screenshot-04.png)
 
 ### Live URL
 

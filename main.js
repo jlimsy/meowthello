@@ -366,8 +366,6 @@ function placeDisc(){
                   
                   if (strIdEndOfChain.innerText === currPlayer) {
                     document.querySelector('.message').innerText = "Valid Cell";
-                    // isValidCell = true;
-                    // console.log(strIdEndOfChain,"03 isValidCell:", isValidCell)
                     event.target.innerText = currPlayer; //place the disc
                     
                     for (let i = 1; i < step; i++) {
@@ -410,6 +408,9 @@ function placeDisc(){
 
           if (allCellsOccupied){
             document.querySelector(".game").innerText = "Game Over!"
+            let scoreX = countScore(playerX);
+            let scoreO = countScore(playerO)
+            scoreReport(scoreX, scoreO);
             return gameOver = true;
           }
 

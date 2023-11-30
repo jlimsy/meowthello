@@ -299,7 +299,6 @@ document.getElementById(startCells[3].toString()).innerText = playerX;
 statusMessage.innerText = "Select a cell to place disc:";
 currPlayerDisplay.innerText = currPlayer
 
-
 function placeDisc(){
 
   let isValidCell;
@@ -376,26 +375,6 @@ function placeDisc(){
                       let colFlip = array[1] + i * directions[dir].y;
                       idsToFlip.push([rowFlip, colFlip]);
                     }
-                    
-                    function gameStatus(){
-                      let gameOver;
-
-                      let entireGrid = Array.from(document.querySelectorAll(".cell"))
-
-                      let allCellsOccupied = entireGrid.every(
-                          (cell) => cell.innerText !== ""
-                        )
-              
-                        if (allCellsOccupied){
-                          document.querySelector(".game status").innerText = "Game Over!"
-                          alert("game over!")
-
-                          return gameOver = true;
-                        }
-              
-                    }
-
-                    gameStatus();
 
                     // console.log("idsToFlip:", idsToFlip);
 
@@ -404,15 +383,15 @@ function placeDisc(){
                   } 
                 }
               }
-              
               flipDiscs(idsToFlip)
             }
 
           };
 
         }
-          let scoreX = countScore(playerX);
-  let scoreO = countScore(playerO);
+        
+        let scoreX = countScore(playerX);
+        let scoreO = countScore(playerO);
         document.querySelector("#countX").innerText = scoreX;
         document.querySelector("#countO").innerText = scoreO;
         
@@ -421,6 +400,22 @@ function placeDisc(){
       checkAdjCells(targetNumId);
       // SWITCH PLAYER INSIDE OF placeDisc() BUT OUTSIDE checkAdjCells();
       switchPlayer(event.target);
+
+      function gameStatus(){
+        let gameOver;
+        
+        let allCellsOccupied = Array.from(document.querySelectorAll(".cell")).every(
+            (cell) => cell.innerText !== ""
+          )
+
+          if (allCellsOccupied){
+            document.querySelector(".game").innerText = "Game Over!"
+            return gameOver = true;
+          }
+
+      }
+
+      gameStatus();
       
     }
     )
@@ -429,13 +424,15 @@ function placeDisc(){
 
 function highlightCells(){
   
+  let isValidCell; 
+
   document.querySelectorAll(".cell").forEach(
     (cell) => {
       cell.addEventListener("mouseover", function(event){
   
         //SPECIFY THE INVALID CELLS
         if (event.target.innerText !== ""){
-          return
+          return isValidCell = false;
         }
 
         let targetNumId = strIdToNum(event.target.id); //event target id is a string - needs to be converted to num
@@ -452,7 +449,7 @@ function highlightCells(){
        )
 
        if (allAdjCellsEmpty){
-        return;
+        return isValidCell = false;
        };
 
        // SPECIFY THE VALID CELLS
@@ -531,3 +528,5 @@ document.getElementById("fill").addEventListener("click", function(){
   document.querySelector("#countO").innerText = scoreO;
   scoreReport(scoreX, scoreO)
 })
+
+

@@ -23,7 +23,7 @@ Javascript, CSS, HTML
 1.  Set up a matrix of IDs to represent the individual cells of the grid (divs) - function matrixOfIds, tagCellsWithId
 2.  Select center cells which are occupied by discs of opposing players. - function centerIds
 
-![Alt text](<Screenshot 2023-11-30 at 9.53.49 PM.png>)
+![Alt text](public/screenshot-01.png)
 
 3.  Invalid cells:
     3A. are not empty

@@ -238,9 +238,10 @@ document.getElementById(startCells[2].toString()).innerText = playerO;
 document.getElementById(startCells[3].toString()).innerText = playerX;
 
 function placeDisc(){
+
   let isValidCell = false;
 
-
+  document.querySelector('.message').innerText = "Select a cell to place disc:";
 
   currPlayerDisplay.innerText = currPlayer
   
@@ -251,7 +252,7 @@ function placeDisc(){
   
         //SPECIFY THE INVALID CELLS
         if (event.target.innerText !== ""){
-          document.querySelector('.message').innerText = "Invalid Cell: This cell is not empty.";
+          document.querySelector('.message').innerText = "Invalid Cell: This cell is occupied.";
           return isValidCell = false;
         }
 
@@ -297,7 +298,7 @@ function placeDisc(){
           let strId = document.getElementById(numIdToStr([row, col]));
           // console.log(strId.id, "innerText:", strId.innerText);
 
-          if (row >=0 && row < GRID_SMALL && col >=0 && col < GRID_SMALL){
+          if (withinGridSize(row, col, GRID_SMALL)){
             if (strId.innerText === "" || strId.innerText === currPlayer){
               console.log("adjacent cell:", strId.id, "innerText", strId.innerText);
               continue;
@@ -312,7 +313,7 @@ function placeDisc(){
                 let colChain = array[1] + (step * directions[dir].y);
                 // console.log("chain of coordinates", rowChain, colChain);
 
-                if (rowChain >=0 && rowChain < GRID_SMALL && colChain >=0 && colChain < GRID_SMALL){
+                if (withinGridSize(rowChain, colChain, GRID_SMALL)){
 
                   let strIdEnd = document.getElementById(numIdToStr([rowChain, colChain]));
                   console.log(strIdEnd.id, `${strIdEnd.innerText}`);
@@ -330,9 +331,10 @@ function placeDisc(){
                     
                     console.log("idsToFlip:", idsToFlip);
                     break;
+                    
                   } else if (strIdEnd.innerText !== currPlayer){
                     isValidCell = false;
-                    document.querySelector('.message').innerText = `Invalid Cell: Line of occupied cells does not end with Disc ${currPlayer}`;
+                    document.querySelector('.message').innerText = `Invalid Cell: Line of opponent-occupied cells does not end with Disc ${currPlayer}`;
                   }
                 }
               }
@@ -351,7 +353,6 @@ function placeDisc(){
 
             }
           };
-
 
         }
 

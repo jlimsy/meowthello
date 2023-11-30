@@ -17,11 +17,14 @@ const directions = [
 
 let currPlayer = playerO;
 
+
 /*----- cached UI elements  -----*/
 const grid = document.querySelector(".grid");
 const cells = document.querySelectorAll(".cell"); 
 const currPlayerDisplay = document.getElementById("current");
-const statusMessage = document.querySelector('.message')
+const statusMessage = document.querySelector('.message');
+const winnerStatus = document.querySelector(".winner");
+
 
 /*----- event listeners -----*/
 
@@ -266,6 +269,18 @@ function countScore(string){
     return score;
 };
 
+function scoreReport(scoreX, scoreO){    
+  document.querySelector(".game").innerText = "Game Over!"
+    if (scoreX > scoreO) {
+      let winner = "Player X";
+      winnerStatus.innerText = `${winner} has won!`
+    } else if (scoreO > scoreX) {
+      let winner = "Player O";
+      winnerStatus.innerText = `${winner} has won!`
+    } else if (scoreX === scoreO) {
+      winnerStatus.innerText = `It's a tie!`
+  }
+}
 
 
 /*----- render functions -----*/
@@ -283,6 +298,7 @@ document.getElementById(startCells[3].toString()).innerText = playerX;
 
 statusMessage.innerText = "Select a cell to place disc:";
 currPlayerDisplay.innerText = currPlayer
+
 
 function placeDisc(){
 
@@ -395,9 +411,8 @@ function placeDisc(){
           };
 
         }
-
-        let scoreX = countScore(playerX);
-        let scoreO = countScore(playerO);
+          let scoreX = countScore(playerX);
+  let scoreO = countScore(playerO);
         document.querySelector("#countX").innerText = scoreX;
         document.querySelector("#countO").innerText = scoreO;
         
@@ -444,18 +459,7 @@ function highlightCells(){
 
       function checkAdjCells(array){
         let idsToFlip = [];
-
-        const directions = [
-          {x: -1, y: 0}, //up
-          {x: +1, y: 0}, //down
-          {x: 0, y: -1}, //left
-          {x: 0, y: +1}, //right
-          {x: +1, y: +1}, //southeast
-          {x: -1, y:-1}, //northwest
-          {x: -1, y: +1}, //northeast
-          {x: +1, y: -1}, //southwest
-        ]
-
+        
         for (let dir in directions){
           let row = array[0] + directions[dir].x;
           let col = array[1] + directions[dir].y;
@@ -503,28 +507,10 @@ function highlightCells(){
           };
 
         }
-
-        let scoreX = countScore(playerX);
-        let scoreO = countScore(playerO);
-        document.querySelector("#countX").innerText = scoreX;
-        document.querySelector("#countO").innerText = scoreO;
         
       }
 
-      checkAdjCells(targetNumId);
-      
-      // SWITCH PLAYER INSIDE OF placeDisc() BUT OUTSIDE checkAdjCells();
-    
-      if(event.target.innerText === currPlayer){
-        if (currPlayer === playerX){
-          currPlayer = playerO;
-          currPlayerDisplay.innerText = currPlayer
-        } else if (currPlayer === playerO) {
-          currPlayer = playerX;
-          currPlayerDisplay.innerText = currPlayer
-        }
-      }
-      
+      checkAdjCells(targetNumId); 
     }
     )
     
@@ -535,22 +521,13 @@ function highlightCells(){
   })
 }
 
-function scoreReport(scoreX, scoreO){    
-  document.querySelector(".game").innerText = "Game Over!"
-    if (scoreX > scoreO) {
-      let winner = "Player X";
-      document.querySelector(".winner").innerText = `${winner} has won!`
-    } else if (scoreO > scoreX) {
-      let winner = "Player O";
-      document.querySelector(".winner").innerText = `${winner} has won!`
-    } else if (scoreX === scoreO) {
-      document.querySelector(".winner").innerText = `It's a tie!`
-  }
-}
-
-// scoreReport(countScore(playerX), countScore(playerO))
+// scoreReport(scoreX, scoreO)
 
 document.getElementById("fill").addEventListener("click", function(){
   fillGrid();
-  scoreReport(countScore(playerX), countScore(playerO))
+  let scoreX = countScore(playerX);
+  let scoreO = countScore(playerO);
+  document.querySelector("#countX").innerText = scoreX;
+  document.querySelector("#countO").innerText = scoreO;
+  scoreReport(scoreX, scoreO)
 })

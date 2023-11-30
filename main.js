@@ -4,12 +4,24 @@ const playerO = "O";
 const GRID_SMALL = 6;
 const GRID_MEDIUM = 8;
 const GRID_LARGE = 10;
+const directions = [
+  {x: -1, y: 0}, //up
+  {x: +1, y: 0}, //down
+  {x: 0, y: -1}, //left
+  {x: 0, y: +1}, //right
+  {x: +1, y: +1}, //southeast
+  {x: -1, y:-1}, //northwest
+  {x: -1, y: +1}, //northeast
+  {x: +1, y: -1}, //southwest
+]
+
 let currPlayer = playerO;
 
 /*----- cached UI elements  -----*/
 const grid = document.querySelector(".grid");
 const cells = document.querySelectorAll(".cell"); 
-const currPlayerDisplay = document.getElementById("current")
+const currPlayerDisplay = document.getElementById("current");
+const statusMessage = document.querySelector('.message')
 
 /*----- event listeners -----*/
 
@@ -99,6 +111,20 @@ function getDirAdjIds(array){
     return validDirAdjIds;
 };
 
+function switchPlayer(player){
+
+  if(player.innerText === currPlayer){
+    if (currPlayer === playerX){
+      currPlayer = playerO;
+      currPlayerDisplay.innerText = currPlayer
+    } else if (currPlayer === playerO) {
+      currPlayer = playerX;
+      currPlayerDisplay.innerText = currPlayer
+    }
+  }
+
+};
+
 function fillGrid(){
   const players = [playerX, playerO];
 
@@ -109,8 +135,15 @@ function fillGrid(){
       cell.innerText = randomPlayers
     }
   )
-  }
+};
 
+function flipDiscs(arrayOfIds){
+  arrayOfIds.map(
+    (cell) => {
+      document.getElementById(numIdToStr(cell)).innerText = currPlayer
+    }
+  ); 
+};
 
 // function getHorAndVerDirAdjIds(array){  
 //   let horAndVerdirAdjIds = [];
@@ -248,15 +281,12 @@ document.getElementById(startCells[1].toString()).innerText = playerO;
 document.getElementById(startCells[2].toString()).innerText = playerO;
 document.getElementById(startCells[3].toString()).innerText = playerX;
 
+statusMessage.innerText = "Select a cell to place disc:";
+currPlayerDisplay.innerText = currPlayer
+
 function placeDisc(){
 
-  // if (gameOver){
-  //   return;
-  // }
-
-  document.querySelector('.message').innerText = "Select a cell to place disc:";
-
-  currPlayerDisplay.innerText = currPlayer
+  let isValidCell;
   
   document.querySelectorAll(".cell").forEach(
     (cell) => {
@@ -265,8 +295,8 @@ function placeDisc(){
   
         //SPECIFY THE INVALID CELLS
         if (event.target.innerText !== ""){
-          document.querySelector('.message').innerText = "Invalid Cell: This cell is occupied.";
-          return;
+          statusMessage.innerText = "Invalid Cell: This cell is occupied.";
+          return isValidCell = false;
         }
 
         let targetNumId = strIdToNum(event.target.id); //event target id is a string - needs to be converted to num
@@ -283,25 +313,14 @@ function placeDisc(){
        )
 
        if (allAdjCellsEmpty){
-        document.querySelector('.message').innerText = "Invalid Move: All adjacent cells are empty.";
-        return
+        statusMessage.innerText = "Invalid Move: All adjacent cells are empty.";
+        return isValidCell = false;
        };
 
        // SPECIFY THE VALID CELLS
 
       function checkAdjCells(array){
         let idsToFlip = [];
-
-        const directions = [
-          {x: -1, y: 0}, //up
-          {x: +1, y: 0}, //down
-          {x: 0, y: -1}, //left
-          {x: 0, y: +1}, //right
-          {x: +1, y: +1}, //southeast
-          {x: -1, y:-1}, //northwest
-          {x: -1, y: +1}, //northeast
-          {x: +1, y: -1}, //southwest
-        ]
 
         for (let dir in directions){
           let row = array[0] + directions[dir].x;
@@ -370,15 +389,7 @@ function placeDisc(){
                 }
               }
               
-              function flipDiscs(){
-                idsToFlip.map(
-                  (cell) => {
-                    document.getElementById(numIdToStr(cell)).innerText = currPlayer
-                  }
-
-                ); 
-              }
-              flipDiscs()
+              flipDiscs(idsToFlip)
             }
 
           };
@@ -393,18 +404,8 @@ function placeDisc(){
       }
 
       checkAdjCells(targetNumId);
-      
       // SWITCH PLAYER INSIDE OF placeDisc() BUT OUTSIDE checkAdjCells();
-    
-      if(event.target.innerText === currPlayer){
-        if (currPlayer === playerX){
-          currPlayer = playerO;
-          currPlayerDisplay.innerText = currPlayer
-        } else if (currPlayer === playerO) {
-          currPlayer = playerX;
-          currPlayerDisplay.innerText = currPlayer
-        }
-      }
+      switchPlayer(event.target);
       
     }
     )
@@ -419,7 +420,7 @@ function highlightCells(){
   
         //SPECIFY THE INVALID CELLS
         if (event.target.innerText !== ""){
-          return;
+          return
         }
 
         let targetNumId = strIdToNum(event.target.id); //event target id is a string - needs to be converted to num
